@@ -1,0 +1,6 @@
+config.py
+watchlist.json
+alert_state.json
+*.pyc
+__pycache__/
+.env
