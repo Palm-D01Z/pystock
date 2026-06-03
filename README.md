@@ -21,7 +21,7 @@ cp config.example.py config.py      # แล้วแก้ watchlist
 1. สมัครที่ https://finnhub.io → ได้ **API key**
 2. ตั้ง environment variable:
 ```bash
-export FINNHUB_API_KEY="d8fc4e9r01qub7kgv980d8fc4e9r01qub7kgv98g"
+export FINNHUB_API_KEY="xxxxxxxxxxx"
 ```
 > free tier: real-time หุ้น US ผ่าน REST, rate limit ~60 calls/นาที (พอเหลือสำหรับ watchlist ส่วนตัว)
 > ฟีดเป็น IEX (ตลาดเดียว ไม่ใช่ราคารวม SIP) — เกาะราคาจริงใกล้มาก เหมาะกับ alert ที่ไม่ใช่ day-trade

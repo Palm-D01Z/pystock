@@ -40,18 +40,17 @@ except ImportError:
 try:
     import config
 except ImportError:
-    print("ไม่พบ config.py — คัดลอกจาก config.example.py ก่อน:  cp config.example.py config.py")
-    sys.exit(1)
+    config = None
 
 STATE_FILE = Path(__file__).parent / "alert_state.json"
 FINNHUB_QUOTE_URL = "https://finnhub.io/api/v1/quote"
 
 # ---------- ค่าเริ่มต้น (override ได้ใน config.py) ----------
-RSI_PERIOD = getattr(config, "RSI_PERIOD", 14)
-HISTORY_PERIOD = getattr(config, "HISTORY_PERIOD", "3mo")
-DEFAULT_OVERBOUGHT = getattr(config, "RSI_OVERBOUGHT", 70)
-DEFAULT_OVERSOLD = getattr(config, "RSI_OVERSOLD", 30)
-CHECK_INTERVAL_MIN = getattr(config, "CHECK_INTERVAL_MIN", 15)
+RSI_PERIOD = getattr(config, "RSI_PERIOD", 14) if config else 14
+HISTORY_PERIOD = getattr(config, "HISTORY_PERIOD", "3mo") if config else "3mo"
+DEFAULT_OVERBOUGHT = getattr(config, "RSI_OVERBOUGHT", 70) if config else 70
+DEFAULT_OVERSOLD = getattr(config, "RSI_OVERSOLD", 30) if config else 30
+CHECK_INTERVAL_MIN = getattr(config, "CHECK_INTERVAL_MIN", 15) if config else 15
 
 
 # ---------- การคำนวณ ----------
@@ -198,8 +197,9 @@ def notify(alerts: list) -> None:
 def run_once() -> None:
     state = load_state()
     all_alerts = []
-    print(f"ตรวจ watchlist ({len(config.WATCHLIST)} ตัว)...")
-    for ticker, cfg in config.WATCHLIST.items():
+    watchlist = getattr(config, "WATCHLIST", {}) if config else {}
+    print(f"ตรวจ watchlist ({len(watchlist)} ตัว)...")
+    for ticker, cfg in watchlist.items():
         all_alerts += check_ticker(ticker, cfg, state)
     save_state(state)
     notify(all_alerts)
